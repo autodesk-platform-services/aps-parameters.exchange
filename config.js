@@ -48,33 +48,12 @@ module.exports = {
             LABELS_URL:         "https://developer.api.autodesk.com/parameters/v1/accounts/{0}/labels",
             LABEL_URL:          "https://developer.api.autodesk.com/parameters/v1/accounts/{0}/labels/{1}",
 
-            // SEARCHES_URL:       "https://developer.api.autodesk.com/parameters/v1/accounts/{0}/collections/{1}/saved-searches",
-
-            SPECS_URL:          "https://developer.api.autodesk.com/parameters/v1/specs?offset=0&limit=200",
+            SPECS_URL:          "https://developer.api.autodesk.com/parameters/v1/specs",
             DISCIPLINES_URL:    "https://developer.api.autodesk.com/parameters/v1/disciplines",
-            CATEGORIES_URL:     "https://developer.api.autodesk.com/parameters/v1/classifications/categories?limit=2000",
-            GROUPS_URL:         "https://developer.api.autodesk.com/parameters/v1/classifications/groups?filter[bindable]=true&limit=2000",
+            CATEGORIES_URL:     "https://developer.api.autodesk.com/parameters/v1/classifications/categories",
+            GROUPS_URL:         "https://developer.api.autodesk.com/parameters/v1/classifications/groups?filter[bindable]=true",
         },
         RevitFamilyTypeId:  'autodesk.revit.spec:familyType-1.0.0',
         RevitFamilyType:    'Family Type'
     },  
-    
-    // bim360Cost:{
-    //     URL:{
-    //         BUDGETS_URL:        "https://developer.api.autodesk.com/cost/v1/containers/{0}/budgets?include=attributes",
-    //         BUDGET_URL:         "https://developer.api.autodesk.com/cost/v1/containers/{0}/budgets/{1}",
-
-    //         CONTRACTS_URL:      "https://developer.api.autodesk.com/cost/v1/containers/{0}/contracts?include=attributes",
-    //         CONTRACT_URL:       "https://developer.api.autodesk.com/cost/v1/containers/{0}/contracts/{1}",
-            
-    //         COSTITEMS_URL:      "https://developer.api.autodesk.com/cost/v1/containers/{0}/cost-items?include=attributes",
-    //         COSTITEM_URL:       "https://developer.api.autodesk.com/cost/v1/containers/{0}/cost-items/{1}",
-            
-    //         CHANGEORDERS_URL:   "https://developer.api.autodesk.com/cost/v1/containers/{0}/change-orders/{1}?include=attributes",
-    //         CHANGEORDER_URL:    "https://developer.api.autodesk.com/cost/v1/containers/{0}/change-orders/{1}/{2}",
-        
-    //         CUSTOM_ATTRIBUTE_URL: "https://developer.api.autodesk.com/cost/v1/containers/{0}/property-values:batch-update"
-    //     }
-    // },
-    
 };

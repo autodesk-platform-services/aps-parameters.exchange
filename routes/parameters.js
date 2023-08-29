@@ -61,7 +61,7 @@ router.use(async (req, res, next) => {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-/// get different data of cost type
+/// get parameters in a collection
 /////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/parameters/collections', jsonParser, async function (req, res) {
   const accountId = req.query.accountId;
@@ -81,7 +81,7 @@ router.get('/parameters/collections', jsonParser, async function (req, res) {
   } catch (err) {
     console.error(err)
     return (res.status(500).json({
-      diagnostic: 'failed to get the cost info'
+      diagnostic: 'failed to get the parameters info'
     }));
   }
   return (res.status(200).json(parametersRes.body.results.filter((item)=>{return !item.isArchived})));
@@ -90,7 +90,7 @@ router.get('/parameters/collections', jsonParser, async function (req, res) {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-/// get different data of cost type
+/// get all parameters labels
 /////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/parameters/labels', jsonParser, async function (req, res) {
   const accountId = req.query.accountId;
@@ -108,7 +108,7 @@ router.get('/parameters/labels', jsonParser, async function (req, res) {
   } catch (err) {
     console.error(err)
     return (res.status(500).json({
-      diagnostic: 'failed to get the cost info'
+      diagnostic: 'failed to get the parameters label info'
     }));
   }
   return (res.status(200).json(labelsRes.body.results));
@@ -116,35 +116,8 @@ router.get('/parameters/labels', jsonParser, async function (req, res) {
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-/// get different data of cost type
-/////////////////////////////////////////////////////////////////////////////////////////////
-router.get('/parameters/searches', jsonParser, async function (req, res) {
-  const accountId = req.query.accountId;
-  const collectionId = req.query.collectionId;
-  if (!accountId || !collectionId) {
-    console.error('ACC account id or collection id is not provide.');
-    return (res.status(400).json({
-      diagnostic: 'ACC account id or collection id is not provide.'
-    }));
-  }  
-
-  let searchesUrl = config.parameters.URL.SEARCHES_URL.format(accountId, collectionId);
-  let searchesRes = null;
-  try {
-    searchesRes = await apiClientCallAsync('GET', searchesUrl, req.oauth_token.access_token);
-  } catch (err) {
-    console.error(err)
-    return (res.status(500).json({
-      diagnostic: 'failed to get the saved searches info'
-    }));
-  }
-  return (res.status(200).json(searchesRes.body.results));
-})
-
-
 // /////////////////////////////////////////////////////////////////////////////////////////////
-// /// update cost data
+// /// update parameters data
 // /////////////////////////////////////////////////////////////////////////////////////////////
 router.post('/parameters/info', jsonParser, async function (req, res) {
   const accountId = req.body.accountId;
@@ -169,21 +142,17 @@ router.post('/parameters/info', jsonParser, async function (req, res) {
       // parametersUrl = config.bim360Cost.URL.CONTRACT_URL.format(containerId, requestData.id);
       break;
     }
-    case 'saved-searches': {
-      // parametersUrl = config.bim360Cost.URL.COSTITEM_URL.format(containerId, requestData.id);
-      break;
-    }
   };
-  let costInfoRes = null;
+  let parameterRes = null;
   try {
-    costInfoRes = await apiClientCallAsync('PATCH', parametersUrl, req.oauth_token.access_token, req.body.requestData);
+    parameterRes = await apiClientCallAsync('PATCH', parametersUrl, req.oauth_token.access_token, req.body.requestData);
   } catch (err) {
     console.error(err);
     return (res.status(500).json({
       diagnostic: 'failed to update the parameters info'
     }));
   }
-  return (res.status(200).json(costInfoRes.body));
+  return (res.status(200).json(parameterRes.body));
 })
 
 
@@ -219,7 +188,7 @@ router.post('/parameters:import', jsonParser, async function (req, res) {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-/// get read data for the input Id 
+/// find real data for the input Id
 /////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/parameters/type/:typeId/id/:valueId', jsonParser, async function(req, res){
   const typeId = req.params.typeId;
@@ -236,7 +205,6 @@ router.get('/parameters/type/:typeId/id/:valueId', jsonParser, async function(re
       break;
 
     }
-    // case 'groupId':
     case 'metadata.group': {
       requestUrl = config.parameters.URL.GROUPS_URL;
       tokenType = TokenType.THREELEGGED;
@@ -252,21 +220,16 @@ router.get('/parameters/type/:typeId/id/:valueId', jsonParser, async function(re
       break;
     }
 
+    case 'metadata.specCategoryId':
     case 'metadata.categories':{
       requestUrl = config.parameters.URL.CATEGORIES_URL;
       tokenType = TokenType.THREELEGGED;
       break;
     }
 
-    // case 'categoryBindingIds':
-    // case 'metadata.categories': {
-    //   requestUrl = config.parameters.URL.CATEGORIES_URL;
-    //   tokenType = TokenType.THREELEGGED;
-    //   break;
-    // }
-
     case 'creatorId':
     case 'creator':
+    case 'createdBy':
     case 'changedBy':
     case 'contactId':
     case 'signedBy':
@@ -277,36 +240,6 @@ router.get('/parameters/type/:typeId/id/:valueId', jsonParser, async function(re
       tokenType = TokenType.TWOLEGGED;
       break;
     }
-
-    // case 'contractId': {
-    //   var containerId = req.query.costContainerId;
-    //   if (!containerId) {
-    //     console.error('input container id is not correct.');
-    //     return (res.status(400).json({
-    //       diagnostic: 'input container id is not correct'
-    //     }));
-    //   }
-    //   requestUrl = config.bim360Cost.URL.CONTRACT_URL.format(containerId, valueId);
-    //   tokenType = TokenType.THREELEGGED;
-    //   break;
-    // }
-
-    // case 'parentId': 
-    // case 'rootId':
-    // case 'budgets':
-    // case 'budget':
-    // case 'budgetId':{
-    //   var containerId = req.query.costContainerId;
-    //   if(!containerId){  
-    //     console.error('input container id is not correct.');
-    //     return (res.status(400).json({
-    //       diagnostic: 'input container id is not correct'
-    //     }));
-    //   }  
-    //   requestUrl = config.bim360Cost.URL.BUDGET_URL.format(containerId, valueId);
-    //   tokenType = TokenType.THREELEGGED;
-    //   break;
-    // }
   }
   let token = null;
   if( tokenType === TokenType.TWOLEGGED ){
@@ -320,73 +253,54 @@ router.get('/parameters/type/:typeId/id/:valueId', jsonParser, async function(re
     token = null;
   }
   let response = null;
+  let itemList = [];
+  let resInfo = null;
+  
+  // Get the item list or the item info 
   try {
-    response = await apiClientCallAsync( 'GET',  requestUrl, token);
+    // Find all results if it has multiple pages
+    while(requestUrl) {
+      response = await apiClientCallAsync('GET', requestUrl, token);
+      if( !response.body || !response.body.pagination )
+        break;
+      itemList = itemList.concat(response.body.results);
+      requestUrl = response.body.pagination.nextUrl;
+    }
   } catch (err) {
     console.error( err );
     return (res.status(500).json({
       diagnostic: 'failed to get the real data for the id'
     }));
   }
-  let detailRes = (response.body);
-  // let result = null;
-  // handle 'companyId' as a special case
-  let companyInfo = {};
-  if(typeId === 'companyId' ){
-    for( let companyItem in detailRes ){
-      if( detailRes[companyItem].member_group_id === valueId ){
-        companyInfo.name = detailRes[companyItem].name;
-        break;
-      }
-    }
-    detailRes = companyInfo;
+
+  // Set the resInfo  with the item info.
+  switch (typeId) {
+    case 'groupBindingId':
+    case 'metadata.group':
+      resInfo = itemList.find((item) => {
+        return item.bindingId === valueId
+      })
+      break;
+
+    case 'specId':
+    case 'metadata.categories':
+    case 'metadata.specCategoryId':
+      resInfo = itemList.find((item) => {
+        return item.id == valueId
+      })
+      break;
+
+    case 'createdBy':
+      resInfo = response.body;
+      break;
+
+    case 'metadata.labelIds':
+      resInfo.name = response.body.name;
+      break;
   }
 
-  if(typeId === 'groupBindingId' || typeId === 'metadata.group'){
-    detailRes = detailRes.results.find( (item) => {
-      return item.bindingId === valueId
-    })
-  }
-
-  if(typeId === 'specId' || typeId === 'metadata.categories'){
-    detailRes = detailRes.results.find( (item) => {
-      return item.id == valueId
-    })
-  }
-
-  // if(typeId === 'metadata.labelIds'){
-  //   detailRes.name = detailRes.name
-  // }
-
-  return (res.status(200).json(detailRes));
+  return (res.status(200).json(resInfo));
 })
-
-
-// /////////////////////////////////////////////////////////////////////////////////////////////
-// /// update the custom attributes
-// /////////////////////////////////////////////////////////////////////////////////////////////
-// router.post('/cost/attribute',jsonParser, async function (req, res) {
-//   const containerId = req.body.costContainerId;
-//   const requestData = req.body.requestData;
-//   if(!containerId || !requestData){  
-//     console.error('containerId or requestData is not provided.');
-//     return (res.status(400).json({
-//       diagnostic: 'containerId or requestData is not provided in request body'
-//     }));
-//   }  
-//   const parametersUrl = config.bim360Cost.URL.CUSTOM_ATTRIBUTE_URL.format(containerId);
-
-//   let costInfoRes = null;
-//   try {
-//     costInfoRes = await apiClientCallAsync('POST', parametersUrl, req.oauth_token.access_token, requestData);
-//   } catch (err) {
-//     console.error(err)
-//     return (res.status(500).json({
-//       diagnostic: 'failed to update custom attribute'
-//     }));
-//   }
-//   res.status(200).json(costInfoRes.body);
-// })
 
 
 module.exports = router

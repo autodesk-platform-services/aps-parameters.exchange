@@ -70,7 +70,6 @@ $(document).ready(function () {
 });
 
 
-
 function prepareUserHubsTree() {
   $('#sourceHubs').jstree({
       'core': {
@@ -124,7 +123,7 @@ function prepareUserHubsTree() {
         delete parametersTable;
         parametersTable = null;
       }
-      parametersTable = new ParametersTable('#parametersTable', accountId, groupId, collectionId, DataType.BUDGET );
+      parametersTable = new ParametersTable('#parametersTable', accountId, groupId, collectionId, DataType.PARAMETERS );
       $('#btnRefresh').click();
     }
   }); 

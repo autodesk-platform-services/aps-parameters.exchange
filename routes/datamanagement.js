@@ -80,7 +80,6 @@ async function getHubs(oauthClient, credentials, res) {
 }
 
 async function getGroups(accountId, credentials, res) {
-
     let groupsUrl = config.parameters.URL.PARAMETERS_GROUPS_URL.format(accountId);
     let groupsRes = null;
     try {
@@ -88,7 +87,7 @@ async function getGroups(accountId, credentials, res) {
     } catch (err) {
       console.error(err)
       return (res.status(500).json({
-        diagnostic: 'failed to get the parameter groups info'
+        diagnostic: 'failed to get the parameters groups info'
       }));
     }
 
@@ -105,10 +104,6 @@ async function getGroups(accountId, credentials, res) {
 
 
 async function getCollections(accountId, groupId, credentials, res) {
-    // const projects = new ProjectsApi();
-    // const data = await projects.getHubProjects(hubId, {}, oauthClient, credentials);
-
-
     let collectionsUrl = config.parameters.URL.COLLECTIONS_URL.format(accountId, groupId);
     let collectionsRes = null;
     try {
@@ -116,7 +111,7 @@ async function getCollections(accountId, groupId, credentials, res) {
     } catch (err) {
       console.error(err)
       return (res.status(500).json({
-        diagnostic: 'failed to get the cost info'
+        diagnostic: 'failed to get the parameters collection info'
       }));
     }
 

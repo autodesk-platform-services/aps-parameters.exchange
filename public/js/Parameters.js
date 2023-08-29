@@ -52,23 +52,16 @@ const Editable_String = "(Editable)";
 // Data type
 const DataType = {
   PARAMETERS   : 'parameters',
-  LABELS: 'labels',
-  SEARCHES: 'saved-searches'
+  LABELS: 'labels'
 }
 
 // columns that would be removed by "Row data"
 const NotRelevantRowDataProperties = {
   [DataType.PARAMETERS]: [
-    // 'metadata.specCategoryId',
-    // 'metadata.group.id'
     'metadata.pimPropDMBehavior',
     'metadata.pimPropBehavior'
-
-
   ],
   [DataType.LABELS]: [
-  ],
-  [DataType.SEARCHES]: [
   ]
 };
 
@@ -80,13 +73,8 @@ const NotRelevantReadableProperties = {
     'metadata.group.id',
     'metadata.pimPropDMBehavior',
     'metadata.pimPropBehavior'
-
-    // 'metadata.specCategoryId',
   ],
   [DataType.LABELS]: [
-    'id',
-  ],
-  [DataType.SEARCHES]: [
     'id',
   ]
 };
@@ -95,20 +83,15 @@ const NotRelevantReadableProperties = {
 // ids which could be replaced by the real data
 const IdProperties = {
   [DataType.PARAMETERS]: [
-    'creator',
+    'createdBy',
     'specId',
-    'metadata.labelIds',
     'metadata.group',
-    'metadata.categories'
-
+    'metadata.categories',
+    'metadata.specCategoryId',
+    'metadata.labelIds'
   ],  
   [DataType.LABELS]: [
     'libraryId',
-  ],
-  [DataType.SEARCHES]: [
-    'createdBy',
-    'labelIds',
-    'groupId'
   ]
 };
 
@@ -121,7 +104,7 @@ const HumanReadableTitleReplacement =
     'description': 'Description',
     'readOnly': 'Read only',
     'specId': 'Data Type',
-    'creator': 'Creator',
+    'createdBy': 'Creator',
     'createdAt': 'Date Created',
 
     'metadata.isHidden': 'Hidden',
@@ -130,14 +113,12 @@ const HumanReadableTitleReplacement =
     'metadata.categories': 'Categories',
     'metadata.labelIds':'Labels',
     'metadata.group.bindingId': 'Properties palette group',
+    'metadata.group': 'Properties palette group',
     'metadata.specCategoryId': 'Category'
   },
   'labels':{
     'name':'Name',
     'description':'Description'
-  },
-  'saved-searches':{
-
   }
 };
 
@@ -146,24 +127,18 @@ const HumanReadableTitleReplacement =
 // Shared Parameters
 class SharedParamtersConverter{
   constructor(){
-
   }
+
   static DbCategoryIdToTypeIdMap = new Map([
     ["-2006202", "autodesk.revit.category.family:abutmentFoundations-1.0.0"],
-    [
-      "-2006208",
-      "autodesk.revit.category.family:abutmentFoundationTags-1.0.0",
-    ],
+    ["-2006208", "autodesk.revit.category.family:abutmentFoundationTags-1.0.0"],
     ["-2006203", "autodesk.revit.category.family:abutmentPiles-1.0.0"],
     ["-2006209", "autodesk.revit.category.family:abutmentPileTags-1.0.0"],
     ["-2006204", "autodesk.revit.category.family:abutmentWalls-1.0.0"],
     ["-2006210", "autodesk.revit.category.family:abutmentWallTags-1.0.0"],
     ["-2001015", "autodesk.revit.category.family:alignmentsTags-1.0.0"],
     ["-2009663", "autodesk.revit.category.family:analyticalMemberTags-1.0.0"],
-    [
-      "-2000958",
-      "autodesk.revit.category.family:analyticalOpeningTags-1.0.0",
-    ],
+    ["-2000958", "autodesk.revit.category.family:analyticalOpeningTags-1.0.0"],
     ["-2000957", "autodesk.revit.category.family:analyticalPanelTags-1.0.0"],
     ["-2006205", "autodesk.revit.category.family:approachSlabs-1.0.0"],
     ["-2006211", "autodesk.revit.category.family:approachSlabTags-1.0.0"],
@@ -173,10 +148,7 @@ class SharedParamtersConverter{
     ["-2005020", "autodesk.revit.category.family:areaTags-1.0.0"],
     ["-2000268", "autodesk.revit.category.family:assemblyTags-1.0.0"],
     ["-2001055", "autodesk.revit.category.family:audioVisualDevices-1.0.0"],
-    [
-      "-2001057",
-      "autodesk.revit.category.family:audioVisualDeviceTags-1.0.0",
-    ],
+    ["-2001057", "autodesk.revit.category.family:audioVisualDeviceTags-1.0.0"],
     ["-2009649", "autodesk.revit.category.family:beamAnalyticalTags-1.0.0"],
     ["-2005130", "autodesk.revit.category.family:beamSystemTags-1.0.0"],
     ["-2005301", "autodesk.revit.category.family:boundaryConditions-1.0.0"],
@@ -194,28 +166,13 @@ class SharedParamtersConverter{
     ["-2006136", "autodesk.revit.category.family:bridgeFoundations-1.0.0"],
     ["-2006176", "autodesk.revit.category.family:bridgeFoundationTags-1.0.0"],
     ["-2006241", "autodesk.revit.category.family:bridgeFraming-1.0.0"],
-    [
-      "-2006245",
-      "autodesk.revit.category.family:bridgeFramingCrossBracing-1.0.0",
-    ],
-    [
-      "-2006278",
-      "autodesk.revit.category.family:bridgeFramingCrossBracingTags-1.0.0",
-    ],
-    [
-      "-2006246",
-      "autodesk.revit.category.family:bridgeFramingDiaphragms-1.0.0",
-    ],
-    [
-      "-2006279",
-      "autodesk.revit.category.family:bridgeFramingDiaphragmTags-1.0.0",
-    ],
+    ["-2006245", "autodesk.revit.category.family:bridgeFramingCrossBracing-1.0.0"],
+    ["-2006278", "autodesk.revit.category.family:bridgeFramingCrossBracingTags-1.0.0"],
+    ["-2006246", "autodesk.revit.category.family:bridgeFramingDiaphragms-1.0.0"],
+    ["-2006279", "autodesk.revit.category.family:bridgeFramingDiaphragmTags-1.0.0"],
     ["-2006243", "autodesk.revit.category.family:bridgeFramingTags-1.0.0"],
     ["-2006248", "autodesk.revit.category.family:bridgeFramingTrusses-1.0.0"],
-    [
-      "-2006281",
-      "autodesk.revit.category.family:bridgeFramingTrussTags-1.0.0",
-    ],
+    ["-2006281", "autodesk.revit.category.family:bridgeFramingTrussTags-1.0.0"],
     ["-2006137", "autodesk.revit.category.family:bridgeGirders-1.0.0"],
     ["-2006177", "autodesk.revit.category.family:bridgeGirderTags-1.0.0"],
     ["-2006131", "autodesk.revit.category.family:bridgePiers-1.0.0"],
@@ -233,19 +190,13 @@ class SharedParamtersConverter{
     ["-2000100", "autodesk.revit.category.family:columns-1.0.0"],
     ["-2001063", "autodesk.revit.category.family:columnTags-1.0.0"],
     ["-2008081", "autodesk.revit.category.family:communicationDevices-1.0.0"],
-    [
-      "-2008082",
-      "autodesk.revit.category.family:communicationDeviceTags-1.0.0",
-    ],
+    ["-2008082", "autodesk.revit.category.family:communicationDeviceTags-1.0.0"],
     ["-2008128", "autodesk.revit.category.family:conduitFitting-1.0.0"],
     ["-2008129", "autodesk.revit.category.family:conduitFittingTags-1.0.0"],
     ["-2008133", "autodesk.revit.category.family:conduitTags-1.0.0"],
     ["-2009060", "autodesk.revit.category.family:coupler-1.0.0"],
     ["-2009061", "autodesk.revit.category.family:couplerTags-1.0.0"],
-    [
-      "-2005032",
-      "autodesk.revit.category.family:curtainWallMullionTags-1.0.0",
-    ],
+    ["-2005032", "autodesk.revit.category.family:curtainWallMullionTags-1.0.0"],
     ["-2000170", "autodesk.revit.category.family:curtainWallPanels-1.0.0"],
     ["-2005012", "autodesk.revit.category.family:curtainWallPanelTags-1.0.0"],
     ["-2008083", "autodesk.revit.category.family:dataDevices-1.0.0"],
@@ -264,57 +215,24 @@ class SharedParamtersConverter{
     ["-2008003", "autodesk.revit.category.family:ductTags-1.0.0"],
     ["-2008013", "autodesk.revit.category.family:ductTerminal-1.0.0"],
     ["-2008014", "autodesk.revit.category.family:ductTerminalTags-1.0.0"],
-    [
-      "-2001078",
-      "autodesk.revit.category.family:electrical_AreaBasedLoads_Tags-1.0.0",
-    ],
-    [
-      "-2001102",
-      "autodesk.revit.category.family:electricalConnectorTags-1.0.0",
-    ],
+    ["-2001078", "autodesk.revit.category.family:electrical_AreaBasedLoads_Tags-1.0.0"],
+    ["-2001102", "autodesk.revit.category.family:electricalConnectorTags-1.0.0"],
     ["-2001040", "autodesk.revit.category.family:electricalEquipment-1.0.0"],
-    [
-      "-2005003",
-      "autodesk.revit.category.family:electricalEquipmentTags-1.0.0",
-    ],
+    ["-2005003", "autodesk.revit.category.family:electricalEquipmentTags-1.0.0"],
     ["-2001060", "autodesk.revit.category.family:electricalFixtures-1.0.0"],
-    [
-      "-2005004",
-      "autodesk.revit.category.family:electricalFixtureTags-1.0.0",
-    ],
+    ["-2005004", "autodesk.revit.category.family:electricalFixtureTags-1.0.0"],
     ["-2006045", "autodesk.revit.category.family:elevationMarks-1.0.0"],
     ["-2001370", "autodesk.revit.category.family:entourage-1.0.0"],
     ["-2001064", "autodesk.revit.category.family:entourageTags-1.0.0"],
     ["-2006271", "autodesk.revit.category.family:expansionJoints-1.0.0"],
     ["-2006273", "autodesk.revit.category.family:expansionJointTags-1.0.0"],
-    [
-      "-2008213",
-      "autodesk.revit.category.family:fabricationContainmentTags-1.0.0",
-    ],
-    [
-      "-2008228",
-      "autodesk.revit.category.family:fabricationDuctworkStiffeners-1.0.0",
-    ],
-    [
-      "-2008229",
-      "autodesk.revit.category.family:fabricationDuctworkStiffenerTags-1.0.0",
-    ],
-    [
-      "-2008194",
-      "autodesk.revit.category.family:fabricationDuctworkTags-1.0.0",
-    ],
-    [
-      "-2008204",
-      "autodesk.revit.category.family:fabricationHangerTags-1.0.0",
-    ],
-    [
-      "-2008209",
-      "autodesk.revit.category.family:fabricationPipeworkTags-1.0.0",
-    ],
-    [
-      "-2009022",
-      "autodesk.revit.category.family:fabricReinforcementTags-1.0.0",
-    ],
+    ["-2008213", "autodesk.revit.category.family:fabricationContainmentTags-1.0.0"],
+    ["-2008228", "autodesk.revit.category.family:fabricationDuctworkStiffeners-1.0.0"],
+    ["-2008229", "autodesk.revit.category.family:fabricationDuctworkStiffenerTags-1.0.0"],
+    ["-2008194", "autodesk.revit.category.family:fabricationDuctworkTags-1.0.0"],
+    ["-2008204", "autodesk.revit.category.family:fabricationHangerTags-1.0.0"],
+    ["-2008209", "autodesk.revit.category.family:fabricationPipeworkTags-1.0.0"],
+    ["-2009022", "autodesk.revit.category.family:fabricReinforcementTags-1.0.0"],
     ["-2009028", "autodesk.revit.category.family:fabricReinSpanSymbol-1.0.0"],
     ["-2001062", "autodesk.revit.category.family:fasciaTags-1.0.0"],
     ["-2008085", "autodesk.revit.category.family:fireAlarmDevices-1.0.0"],
@@ -326,18 +244,9 @@ class SharedParamtersConverter{
     ["-2009652", "autodesk.revit.category.family:floorAnalyticalTags-1.0.0"],
     ["-2005026", "autodesk.revit.category.family:floorTags-1.0.0"],
     ["-2001043", "autodesk.revit.category.family:foodServiceEquipment-1.0.0"],
-    [
-      "-2001045",
-      "autodesk.revit.category.family:foodServiceEquipmentTags-1.0.0",
-    ],
-    [
-      "-2005111",
-      "autodesk.revit.category.family:footingSpanDirectionSymbol-1.0.0",
-    ],
-    [
-      "-2009656",
-      "autodesk.revit.category.family:foundationSlabAnalyticalTags-1.0.0",
-    ],
+    ["-2001045", "autodesk.revit.category.family:foodServiceEquipmentTags-1.0.0"],
+    ["-2005111", "autodesk.revit.category.family:footingSpanDirectionSymbol-1.0.0"],
+    ["-2009656", "autodesk.revit.category.family:foundationSlabAnalyticalTags-1.0.0"],
     ["-2000080", "autodesk.revit.category.family:furniture-1.0.0"],
     ["-2001100", "autodesk.revit.category.family:furnitureSystems-1.0.0"],
     ["-2005007", "autodesk.revit.category.family:furnitureSystemTags-1.0.0"],
@@ -352,20 +261,11 @@ class SharedParamtersConverter{
     ["-2001038", "autodesk.revit.category.family:hardscapeTags-1.0.0"],
     ["-2005255", "autodesk.revit.category.family:internalAreaLoadTags-1.0.0"],
     ["-2005254", "autodesk.revit.category.family:internalLineLoadTags-1.0.0"],
-    [
-      "-2005253",
-      "autodesk.revit.category.family:internalPointLoadTags-1.0.0",
-    ],
-    [
-      "-2009654",
-      "autodesk.revit.category.family:isolatedFoundationAnalyticalTags-1.0.0",
-    ],
+    ["-2005253", "autodesk.revit.category.family:internalPointLoadTags-1.0.0"],
+    ["-2009654", "autodesk.revit.category.family:isolatedFoundationAnalyticalTags-1.0.0"],
     ["-2005029", "autodesk.revit.category.family:keynoteTags-1.0.0"],
     ["-2008114", "autodesk.revit.category.family:layoutPath_Bases-1.0.0"],
-    [
-      "-2008192",
-      "autodesk.revit.category.family:layoutPathBase_Pipings-1.0.0",
-    ],
+    ["-2008192", "autodesk.revit.category.family:layoutPathBase_Pipings-1.0.0"],
     ["-2006020", "autodesk.revit.category.family:levelHeads-1.0.0"],
     ["-2008087", "autodesk.revit.category.family:lightingDevices-1.0.0"],
     ["-2008088", "autodesk.revit.category.family:lightingDeviceTags-1.0.0"],
@@ -377,30 +277,15 @@ class SharedParamtersConverter{
     ["-2003410", "autodesk.revit.category.family:massAreaFaceTags-1.0.0"],
     ["-2003405", "autodesk.revit.category.family:massTags-1.0.0"],
     ["-2005027", "autodesk.revit.category.family:materialTags-1.0.0"],
-    [
-      "-2008232",
-      "autodesk.revit.category.family:mechanicalControlDevices-1.0.0",
-    ],
-    [
-      "-2008233",
-      "autodesk.revit.category.family:mechanicalControlDeviceTags-1.0.0",
-    ],
+    ["-2008232", "autodesk.revit.category.family:mechanicalControlDevices-1.0.0"],
+    ["-2008233", "autodesk.revit.category.family:mechanicalControlDeviceTags-1.0.0"],
     ["-2001140", "autodesk.revit.category.family:mechanicalEquipment-1.0.0"],
-    [
-      "-2000986",
-      "autodesk.revit.category.family:mechanicalEquipmentSetTags-1.0.0",
-    ],
-    [
-      "-2005009",
-      "autodesk.revit.category.family:mechanicalEquipmentTags-1.0.0",
-    ],
+    ["-2000986", "autodesk.revit.category.family:mechanicalEquipmentSetTags-1.0.0"],
+    ["-2005009", "autodesk.revit.category.family:mechanicalEquipmentTags-1.0.0"],
     ["-2001046", "autodesk.revit.category.family:medicalEquipment-1.0.0"],
     ["-2001048", "autodesk.revit.category.family:medicalEquipmentTags-1.0.0"],
     ["-2008231", "autodesk.revit.category.family:mepAncillaryFraming-1.0.0"],
-    [
-      "-2008236",
-      "autodesk.revit.category.family:mepAncillaryFramingTags-1.0.0",
-    ],
+    ["-2008236", "autodesk.revit.category.family:mepAncillaryFramingTags-1.0.0"],
     ["-2000485", "autodesk.revit.category.family:mepSpaceTags-1.0.0"],
     ["-2001007", "autodesk.revit.category.family:mepSystemZoneTags-1.0.0"],
     ["-2001073", "autodesk.revit.category.family:modelGroupTags-1.0.0"],
@@ -431,10 +316,7 @@ class SharedParamtersConverter{
     ["-2001360", "autodesk.revit.category.family:planting-1.0.0"],
     ["-2005021", "autodesk.revit.category.family:plantingTags-1.0.0"],
     ["-2008234", "autodesk.revit.category.family:plumbingEquipment-1.0.0"],
-    [
-      "-2008235",
-      "autodesk.revit.category.family:plumbingEquipmentTags-1.0.0",
-    ],
+    ["-2008235", "autodesk.revit.category.family:plumbingEquipmentTags-1.0.0"],
     ["-2001160", "autodesk.revit.category.family:plumbingFixtures-1.0.0"],
     ["-2005010", "autodesk.revit.category.family:plumbingFixtureTags-1.0.0"],
     ["-2005250", "autodesk.revit.category.family:pointLoadTags-1.0.0"],
@@ -444,10 +326,7 @@ class SharedParamtersConverter{
     ["-2001068", "autodesk.revit.category.family:rampTags-1.0.0"],
     ["-2009013", "autodesk.revit.category.family:rebarShape-1.0.0"],
     ["-2009020", "autodesk.revit.category.family:rebarTags-1.0.0"],
-    [
-      "-2000197",
-      "autodesk.revit.category.family:referenceViewerSymbol-1.0.0",
-    ],
+    ["-2000197", "autodesk.revit.category.family:referenceViewerSymbol-1.0.0"],
     ["-2006080", "autodesk.revit.category.family:revisionCloudTags-1.0.0"],
     ["-2000989", "autodesk.revit.category.family:riseDropSymbols-1.0.0"],
     ["-2001220", "autodesk.revit.category.family:roads-1.0.0"],
@@ -462,96 +341,48 @@ class SharedParamtersConverter{
     ["-2001058", "autodesk.revit.category.family:signage-1.0.0"],
     ["-2001061", "autodesk.revit.category.family:signageTags-1.0.0"],
     ["-2001260", "autodesk.revit.category.family:site-1.0.0"],
-    [
-      "-2001269",
-      "autodesk.revit.category.family:sitePropertyLineSegmentTags-1.0.0",
-    ],
+    ["-2001269", "autodesk.revit.category.family:sitePropertyLineSegmentTags-1.0.0"],
     ["-2001267", "autodesk.revit.category.family:sitePropertyTags-1.0.0"],
     ["-2005016", "autodesk.revit.category.family:siteTags-1.0.0"],
     ["-2001070", "autodesk.revit.category.family:slabEdgeTags-1.0.0"],
     ["-2005110", "autodesk.revit.category.family:spanDirectionSymbol-1.0.0"],
     ["-2001350", "autodesk.revit.category.family:specialityEquipment-1.0.0"],
-    [
-      "-2005014",
-      "autodesk.revit.category.family:specialityEquipmentTags-1.0.0",
-    ],
+    ["-2005014", "autodesk.revit.category.family:specialityEquipmentTags-1.0.0"],
     ["-2005100", "autodesk.revit.category.family:spotElevSymbols-1.0.0"],
     ["-2008099", "autodesk.revit.category.family:sprinklers-1.0.0"],
     ["-2008100", "autodesk.revit.category.family:sprinklerTags-1.0.0"],
     ["-2000941", "autodesk.revit.category.family:stairsLandingTags-1.0.0"],
     ["-2000126", "autodesk.revit.category.family:stairsRailing-1.0.0"],
-    [
-      "-2000127",
-      "autodesk.revit.category.family:stairsRailingBaluster-1.0.0",
-    ],
+    ["-2000127", "autodesk.revit.category.family:stairsRailingBaluster-1.0.0"],
     ["-2000133", "autodesk.revit.category.family:stairsRailingTags-1.0.0"],
     ["-2000940", "autodesk.revit.category.family:stairsRunTags-1.0.0"],
     ["-2000942", "autodesk.revit.category.family:stairsSupportTags-1.0.0"],
     ["-2005023", "autodesk.revit.category.family:stairsTags-1.0.0"],
-    [
-      "-2009057",
-      "autodesk.revit.category.family:structConnectionAnchorTags-1.0.0",
-    ],
-    [
-      "-2009056",
-      "autodesk.revit.category.family:structConnectionBoltTags-1.0.0",
-    ],
-    [
-      "-2009063",
-      "autodesk.revit.category.family:structConnectionHoleTags-1.0.0",
-    ],
-    [
-      "-2009055",
-      "autodesk.revit.category.family:structConnectionPlateTags-1.0.0",
-    ],
-    [
-      "-2009064",
-      "autodesk.revit.category.family:structConnectionProfilesTags-1.0.0",
-    ],
+    ["-2009057", "autodesk.revit.category.family:structConnectionAnchorTags-1.0.0"],
+    ["-2009056", "autodesk.revit.category.family:structConnectionBoltTags-1.0.0"],
+    ["-2009063","autodesk.revit.category.family:structConnectionHoleTags-1.0.0"],
+    ["-2009055","autodesk.revit.category.family:structConnectionPlateTags-1.0.0"],
+    ["-2009064","autodesk.revit.category.family:structConnectionProfilesTags-1.0.0"],
     ["-2009030", "autodesk.revit.category.family:structConnections-1.0.0"],
-    [
-      "-2009058",
-      "autodesk.revit.category.family:structConnectionShearStudTags-1.0.0",
-    ],
-    [
-      "-2006100",
-      "autodesk.revit.category.family:structConnectionSymbols-1.0.0",
-    ],
+    ["-2009058","autodesk.revit.category.family:structConnectionShearStudTags-1.0.0"],
+    ["-2006100","autodesk.revit.category.family:structConnectionSymbols-1.0.0"],
     ["-2009040", "autodesk.revit.category.family:structConnectionTags-1.0.0"],
-    [
-      "-2009059",
-      "autodesk.revit.category.family:structConnectionWeldTags-1.0.0",
-    ],
-    [
-      "-2006110",
-      "autodesk.revit.category.family:structuralBracePlanReps-1.0.0",
-    ],
+    ["-2009059","autodesk.revit.category.family:structConnectionWeldTags-1.0.0"],
+    ["-2006110","autodesk.revit.category.family:structuralBracePlanReps-1.0.0"],
     ["-2001330", "autodesk.revit.category.family:structuralColumns-1.0.0"],
     ["-2005018", "autodesk.revit.category.family:structuralColumnTags-1.0.0"],
     ["-2001300", "autodesk.revit.category.family:structuralFoundation-1.0.0"],
-    [
-      "-2005019",
-      "autodesk.revit.category.family:structuralFoundationTags-1.0.0",
-    ],
+    ["-2005019","autodesk.revit.category.family:structuralFoundationTags-1.0.0"],
     ["-2001320", "autodesk.revit.category.family:structuralFraming-1.0.0"],
-    [
-      "-2005015",
-      "autodesk.revit.category.family:structuralFramingTags-1.0.0",
-    ],
+    ["-2005015","autodesk.revit.category.family:structuralFramingTags-1.0.0"],
     ["-2001354", "autodesk.revit.category.family:structuralStiffener-1.0.0"],
-    [
-      "-2001355",
-      "autodesk.revit.category.family:structuralStiffenerTags-1.0.0",
-    ],
+    ["-2001355","autodesk.revit.category.family:structuralStiffenerTags-1.0.0"],
     ["-2006274", "autodesk.revit.category.family:structuralTendons-1.0.0"],
     ["-2006276", "autodesk.revit.category.family:structuralTendonTags-1.0.0"],
     ["-2008075", "autodesk.revit.category.family:telephoneDevices-1.0.0"],
     ["-2008076", "autodesk.revit.category.family:telephoneDeviceTags-1.0.0"],
     ["-2001039", "autodesk.revit.category.family:temporaryStructure-1.0.0"],
-    [
-      "-2001042",
-      "autodesk.revit.category.family:temporaryStructureTags-1.0.0",
-    ],
+    ["-2001042","autodesk.revit.category.family:temporaryStructureTags-1.0.0"],
     ["-2000280", "autodesk.revit.category.family:titleBlocks-1.0.0"],
     ["-2001103", "autodesk.revit.category.family:toposolidLinkTags-1.0.0"],
     ["-2001094", "autodesk.revit.category.family:toposolidTags-1.0.0"],
@@ -559,28 +390,16 @@ class SharedParamtersConverter{
     ["-2009600", "autodesk.revit.category.family:truss-1.0.0"],
     ["-2005030", "autodesk.revit.category.family:trussTags-1.0.0"],
     ["-2001052", "autodesk.revit.category.family:verticalCirculation-1.0.0"],
-    [
-      "-2001054",
-      "autodesk.revit.category.family:verticalCirculationTags-1.0.0",
-    ],
+    ["-2001054","autodesk.revit.category.family:verticalCirculationTags-1.0.0"],
     ["-2006263", "autodesk.revit.category.family:vibrationDampers-1.0.0"],
     ["-2006264", "autodesk.revit.category.family:vibrationDamperTags-1.0.0"],
     ["-2006265", "autodesk.revit.category.family:vibrationIsolators-1.0.0"],
-    [
-      "-2006266",
-      "autodesk.revit.category.family:vibrationIsolatorTags-1.0.0",
-    ],
+    ["-2006266","autodesk.revit.category.family:vibrationIsolatorTags-1.0.0"],
     ["-2006261", "autodesk.revit.category.family:vibrationManagement-1.0.0"],
-    [
-      "-2006282",
-      "autodesk.revit.category.family:vibrationManagementTags-1.0.0",
-    ],
+    ["-2006282","autodesk.revit.category.family:vibrationManagementTags-1.0.0"],
     ["-2000515", "autodesk.revit.category.family:viewportLabel-1.0.0"],
     ["-2009653", "autodesk.revit.category.family:wallAnalyticalTags-1.0.0"],
-    [
-      "-2009655",
-      "autodesk.revit.category.family:wallFoundationAnalyticalTags-1.0.0",
-    ],
+    ["-2009655","autodesk.revit.category.family:wallFoundationAnalyticalTags-1.0.0"],
     ["-2001072", "autodesk.revit.category.family:wallSweepTags-1.0.0"],
     ["-2005011", "autodesk.revit.category.family:wallTags-1.0.0"],
     ["-2000014", "autodesk.revit.category.family:windows-1.0.0"],
@@ -598,10 +417,7 @@ class SharedParamtersConverter{
     ["MATERIAL", "autodesk.spec.aec:material-1.0.0"],
     ["IMAGE", "autodesk.spec.reference:image-1.0.0"],
     ["MULTILINETEXT", "autodesk.spec.aec:multilineText-2.0.0"],
-    [
-      "LOADCLASSIFICATION",
-      "autodesk.spec.aec.electrical:loadClassification-1.0.0",
-    ],
+    ["LOADCLASSIFICATION", "autodesk.spec.aec.electrical:loadClassification-1.0.0"],
     ["URL", "autodesk.spec.string:url-2.0.0"],
     ["TEXT", "autodesk.spec:spec.string-2.0.0"],
     ["YESNO", "autodesk.spec:spec.bool-1.0.0"],
@@ -618,7 +434,7 @@ class SharedParamtersConverter{
     ["COMPONENTREPEATERTYPE", 3],
   ]);
 
-
+  // convert to DB String from Spec ID
   static getDbString( apsSpecId){
     for( const [key, value ] of SharedParamtersConverter.DbStringToSpecMap ){
       if( value == apsSpecId )
@@ -627,108 +443,25 @@ class SharedParamtersConverter{
     return apsSpecId;
   }
 
-
+  // convert to Spec ID from DB String
   static getSpecId( dbStringId){
     return SharedParamtersConverter.DbStringToSpecMap.get(dbStringId);
   }
 
-  
-
+  // convert to DB Category Id from Spect Type ID
   static convertSpecTypeIdToDBCategoryId( typeId, name='' ){
-
-
     for( const [key, value ] of SharedParamtersConverter.DbCategoryIdToTypeIdMap ){
       if( value == typeId )
         return key;
     }
     return null;
-
-
-    // var customDBString = SharedParamtersConverter.getCustomDBString(typeId);
-    // if (customDBString.length > 0) {
-    //   return customDBString;
-    // }
-
-    // name = SharedParamtersConverter.replaceAll(name);
-    // var disciplinePrefix = "";
-    // if (typeId.includes("hvac") || typeId.includes("energy"))
-    //   disciplinePrefix = "HVAC_";
-    // else if (typeId.includes("electric")) disciplinePrefix = "ELECTRICAL_";
-    // else if (typeId.includes("piping")) disciplinePrefix = "PIPING_";
-    // if (name.includes(disciplinePrefix))
-    //   return name;
-
-    // return disciplinePrefix.concat(name);
   }
-
   
+  // convert to Spec Type ID from DB Category
   static convertDBCategoryIdToSpecTypeId( dbString ){
     return SharedParamtersConverter.DbCategoryIdToTypeIdMap.get(dbString);
   }
-
-
-  // static  getCustomDBString(typeId) {
-  //   if (typeId == "autodesk.spec.aec:sheetLength-2.0.0") return "PAPER LENGTH";
-  //   if (typeId == "autodesk.spec.aec:decimalSheetLength-2.0.0")
-  //     return "PEN SIZE";
-  //   if (typeId == "autodesk.spec.aec.electrical:colorTemperature-2.0.0")
-  //     return "COLOR_TEMPERATURE";
-  //   if (typeId == "autodesk.spec.aec.piping:viscosity-2.0.0")
-  //     return "PIPING_VISCOSITY";
-  //   if (typeId == "autodesk.spec.aec.piping:pipeSize-2.0.0") return "PIPE_SIZE";
-  //   if (typeId == "autodesk.spec.aec.hvac:viscosity-2.0.0")
-  //     return "HVAC_VISCOSITY";
-  //   if (typeId == "autodesk.spec.aec.hvac:airFlowDensity-2.0.0")
-  //     return "HVAC_AIRFLOW_DENSITY";
-  //   if (typeId == "autodesk.spec.aec.hvac:airFlowDividedByVolume-2.0.0")
-  //     return "HVAC_AIRFLOW_DIVIDED_BY_VOLUME";
-  //   if (typeId == "autodesk.spec.aec.hvac:areaDividedByCoolingLoad-2.0.0")
-  //     return "HVAC_AIRFLOW_DIVIDED_BY_COOLING_LOAD";
-  //   if (typeId == "autodesk.spec.aec.electrical:wireDiameter-2.0.0")
-  //     return "WIRE_SIZE";
-  //   if (typeId == "autodesk.spec.aec.electrical:cableTraySize-2.0.0")
-  //     return "CABLETRAY_SIZE";
-  //   if (typeId == "autodesk.spec.aec.electrical:conduitSize-2.0.0")
-  //     return "CONDUIT_SIZE";
-  //   if (typeId == "autodesk.spec.aec.piping:pipeInsulationThickness-2.0.0")
-  //     return "PIPE_INSULATION_THICKNESS";
-  //   if (typeId == "autodesk.spec.aec.structural:lineSpringCoefficient-2.0.0")
-  //     return "LINEAR_SPRING_COEFFICIENT";
-  //   if (
-  //     typeId ==
-  //     "autodesk.spec.aec.structural:rotationalLineSpringCoefficient-2.0.0"
-  //   )
-  //     return "ROTATIONAL_LINEAR_SPRING_COEFFICIENT";
-  //   if (typeId == "autodesk.spec.aec.structural:displacement-2.0.0")
-  //     return "DISPLACEMENT/DEFLECTION";
-  //   if (typeId == "autodesk.spec.aec.structural:frequency-2.0.0")
-  //     return "STRUCTURAL_FREQUENCY";
-  //   if (typeId == "autodesk.spec.aec.structural:surfaceAreaPerUnitLength-2.0.0")
-  //     return "SURFACE_AREA";
-  //   if (typeId == "autodesk.spec.aec.piping:pipeDimension-2.0.0")
-  //     return "PIPE_DIMENSION";
-  //   if (typeId == "autodesk.spec.aec.piping:mass-2.0.0") return "PIPE_MASS";
-  //   if (typeId == "autodesk.spec.aec.piping:pipeMassPerUnitLength-2.0.0")
-  //     return "PIPE_MASS_PER_UNIT_LENGTH";
-  //   if (typeId == "autodesk.spec.aec:time-2.0.0") return "TIMEINTERVAL";
-  //   return "";
-  // }
-  // static replaceAll(name) {
-  //   name = name.replace(/ /g, "_");
-  //   name = name.replace(".", "_");
-  //   name = name.replace("__", "_");
-  //   name = name.replace(/\W +/g, "");
-  //   return name.toUpperCase();
-  // }
-
-
-
 }
-
-
-
-
-
 
 
 
@@ -769,9 +502,6 @@ class ParametersTable {
       case DataType.LABELS:
         requestUrl = '/api/aps/parameters/labels';
         break;
-      case DataType.SEARCHES:
-        requestUrl = '/api/aps/parameters/searches';
-        break;
       default:
         console.log(`failed to set current data set due to the wrong type.`);
         return;
@@ -796,12 +526,13 @@ class ParametersTable {
         await this.updateIdToHumanReadableData();
         this.humanReadableTitles();
       }
+      // prepare to export CSV and TXT for parameters
       if(this.currentDataType == DataType.PARAMETERS){
         this.txtData = this.prepareTxtData();
+        this.appendEditable();
+        this.sortProperties();
+        this.csvData = this.prepareCSVData();
       }
-      this.appendEditable();
-      this.sortProperties();
-      this.csvData = this.prepareCSVData();
     }
     catch (err) {
       console.log(err);
@@ -833,11 +564,6 @@ class ParametersTable {
       }
       case DataType.LABELS: {
         this.tableId = '#labelsTable'
-        break;
-      }
-
-      case DataType.SEARCHES: {
-        this.tableId = '#savedSearchesTable'
         break;
       }
     }
@@ -904,7 +630,7 @@ class ParametersTable {
   };
 
 
-  // export data in cost table to CSV file
+  // export data in parameters table to CSV file
   exportCSV() {
     let csvString = this.csvData.join("%0A");
     let a = document.createElement('a');
@@ -917,7 +643,7 @@ class ParametersTable {
 
 
 
-  // export data in cost table to CSV file
+  // export data in parameters table to TXT file
   exportTxt() {
     let csvString = this.txtData;
     let a = document.createElement('a');
@@ -927,8 +653,6 @@ class ParametersTable {
     document.body.appendChild(a);
     a.click();
   }
-
-
 
 
   // protected: adjust the value of some array|object properties
@@ -942,13 +666,6 @@ class ParametersTable {
 
     const newKeyList = keyList.filter((item, index) => keyList.indexOf(item) === index);
     console.log(newKeyList)
-
-
-    // var data = rowData['metadata'].find(item => {
-    //   console.log(item);
-    //   return (item.id == 'isHidden')} 
-    //   );
-
 
     this.dataSet.forEach((rowData) => {
 
@@ -970,7 +687,6 @@ class ParametersTable {
             }
             const itemId = "metadata.categories";
             rowData[itemId] = categoriesText;
-
           }
           case 'group': {
             const itemId = "metadata.group";
@@ -1003,97 +719,9 @@ class ParametersTable {
           }
         }
       }
-
     })
 
-
-    // for (var key of newKeyList) {
-    //   if (Array.isArray(this.dataSet[0][key])) {
-    //     this.dataSet.forEach((rowData) => {
-    //       switch (key) {
-    //         // case 'categoryBindingIds':
-    //         //   let categoriesText = '';
-    //         //   const categoriesCount = rowData[key].length;
-    //         //   for (let i = 0; i < categoriesCount; ++i) {
-    //         //     categoriesText += rowData[key][i];
-    //         //     categoriesText += ';  ';
-    //         //   }
-    //         //   rowData[key] = categoriesText;
-    //         //   break;
-
-    //         // "labelIds" properties when include costItems in GET Change Orders
-    //         // case 'labelIds':
-    //         //   let costItemsText = '';
-    //         //   const costItemCount = rowData[key].length;
-    //         //   for (let i = 0; i < costItemCount; ++i) {
-    //         //     costItemsText += rowData[key][i];
-    //         //     costItemsText += ';  ';
-    //         //   }
-    //         //   rowData[key] = costItemsText;
-    //         //   break;
-    //         case 'metadata':
-    //           rowData[key].forEach(item => {
-    //             // if (item.id === 'group') {
-    //             //   findEmbededJsonObject(rowData, 'metadata.' + item.id, item.value);
-    //             // }
-    //             if (item.id === 'group') {
-    //               const itemId = "metadata." + item.id;
-    //               if(item.value == null){
-    //                 rowData[itemId] = "";
-    //                 return;
-    //               }
-    //               const groupBindingId =  item.value.bindingId;
-    //               rowData[itemId] = groupBindingId;
-    //             }
-    //             else if( item.id === 'categories'){
-    //               let categoriesText = '';
-    //               const categoriesCount = item.value.length;
-    //               for (let i = 0; i < categoriesCount; ++i) {
-    //                 categoriesText += item.value[i].id;
-    //                 categoriesText += ';';
-    //               }
-    //               const itemId = "metadata." + item.id;
-    //               rowData[itemId] = categoriesText;
-    //             } else if( item.id === 'labelIds'){
-    //               const itemId = "metadata." + item.id;
-    //               if (item.value == null){
-    //                 rowData[itemId] = "";
-    //                 return;
-    //               }
-    //               let labelIdsText = '';
-    //               const labelsCount = item.value.length;
-    //               for (let i = 0; i < labelsCount; ++i) {
-    //                 labelIdsText += item.value[i];
-    //                 labelIdsText += ';';
-    //               }
-    //               rowData[itemId] = labelIdsText;
-    //             } else {
-    //               const itemId = "metadata." + item.id;
-    //               rowData[itemId] = item.value;
-    //             }
-    //           })
-    //           break;
-
-    //         default:
-    //           rowData[key] = "N/A";
-    //           break;
-    //       };
-    //     })
-    //     // let response = null;
-    //   } else if (key === 'core' || key === 'spec' || key === 'information') {
-    //     await Promise.all(
-    //       this.dataSet.map(async (rowData) => {
-    //         findEmbededJsonObject(rowData, key, rowData[key]);
-    //       })
-    //     )
-    //     this.removeColumns(key);
-    //   }
-    // }
-
     this.removeColumns('metadata');
-
-    // this.removeNotRelevantColumns();
-
   };
 
 
@@ -1114,7 +742,7 @@ class ParametersTable {
   }
 
 
-  // protected: change the title to be easily understood, mainly remove the GUID for custom attribute
+  // protected: change the title to be easily understood
   humanReadableTitles() {
     for (var key in this.dataSet[0]) {
       const readableKey = HumanReadableTitleReplacement[this.currentDataType][key];
@@ -1128,7 +756,7 @@ class ParametersTable {
   }
 
 
-  // protected: change to the real data from the Id for specified column
+  // protected: convert Ids to readable data
   async updateIdToHumanReadableData() {
     await Promise.all(
       IdProperties[this.currentDataType].map(async (propertyName) => {
@@ -1141,7 +769,6 @@ class ParametersTable {
     )
     console.log("all the ids are updated to real content.");
   };
-
 
 
   // protected: update all the properties within this column to the real name
@@ -1231,7 +858,7 @@ class ParametersTable {
   }
 
 
-  // protected: import the parameter info
+  // protected: import the parameters info
   async importParameters(requestData) {
     try {
       const requestUrl = '/api/aps/parameters:import';
@@ -1248,30 +875,6 @@ class ParametersTable {
     }
   }
 
-  // // protected: update the custom attribute info
-  // async updateCustomAttribute( associationId, propertyDefinitionId, propertyValue) {
-  //   let associationType = null;
-  //   switch (this.currentDataType ) {
-  //     case 'parameters': {
-  //       associationType = 'Parameters';
-  //       break;
-  //     }
-  //     case 'labels': {
-  //       associationType = 'Labels';
-  //       break;
-  //     }
-  //   }
-  //   const requestBody = {
-  //     'costContainerId': this.costContainerId,
-  //     'requestData': [{
-  //       'associationType': associationType,
-  //       'associationId': associationId,
-  //       'propertyDefinitionId': propertyDefinitionId,
-  //       'value': propertyValue
-  //     }]
-  //   };  
-  //   return await apiClientAsync( '/api/aps/cost/attribute', requestBody, 'post');
-  // }
 
 
   // protected: get the data cached to be exported to CSV later
@@ -1292,7 +895,6 @@ class ParametersTable {
       for (key in item) {
         // TBD: special handle core.description property since it includes a rich text
         if (key === 'description' && item[key] != null) {
-          // let tmpStr = item[key].replaceAll(',', Comma_Replacement).replaceAll('\n', Enter_Replacement).replaceAll(' ', Space_Replacement);
           let tmpStr = item[key].replaceAll(',', Comma_Replacement).replaceAll('\n', Enter_Replacement).replaceAll(' ', Space_Replacement);
           csvRowTmp.push(tmpStr);
         } else {
@@ -1472,7 +1074,6 @@ $(document).ready(function () {
                     }else{
                       jsonData[newKey] = (cells[j].toLowerCase() === 'true' ) ;
                     }
-
                     continue;
                   }
                 }
@@ -1528,8 +1129,6 @@ $(document).ready(function () {
         
             var rows = e.target.result.split("\n");
             
-
-
             // const keys = rows[0].split('\t');
 
             var jsonArray = [];
@@ -1642,10 +1241,6 @@ $(document).ready(function () {
         parametersTable.CurrentDataType = DataType.LABELS;
         break; 
       }
-      case '#saved-searches':{
-        parametersTable.CurrentDataType = DataType.SEARCHES;
-        break; 
-      }
     }
 
     parametersTable.IsHumanReadable = $('input[name="dataTypeToDisplay"]:checked').val() === 'humanReadable';
@@ -1682,9 +1277,7 @@ const SupportedStringTypes = {
     'metadata.group',
   ],
   'labels': [
-  ],
-  'saved-searches': [
-  ],
+  ]
 }
 
 
@@ -1693,9 +1286,7 @@ const SupportedNumberTypes = {
   'parameters': [
   ],
   'labels': [
-  ],
-  'saved-searches': [
-  ],
+  ]
 }
 
 
@@ -1704,12 +1295,9 @@ const SupportedBoolTypes = {
   'parameters': [
     'metadata.isHidden',
     'metadata.isArchived',
-
   ],
   'labels': [
-  ],
-  'saved-searches': [
-  ],
+  ]
 }
 
 
@@ -1735,16 +1323,10 @@ function isTypeSupported(propertyName, parametersType='parameters' ) {
       return TypeSupported.BOOL;
   }
 
-
   for (var key in SupportedStringTypes[parametersType]) {
     if (propertyName === SupportedStringTypes[parametersType][key])
       return TypeSupported.STRING;
   }
-
-  // const params = propertyName.split(':');
-  // if (params[0] === 'CA')
-  //   return TypeSupported.CUSTOM_ATTRIBUTE;
-
   return TypeSupported.NOT_SUPPORTED;
 }
 
