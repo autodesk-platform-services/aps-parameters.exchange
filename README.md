@@ -13,15 +13,11 @@
 ## Description
 This sample demonstrates displaying and exchanging parameters in the following ways:
 1. Display Parameters properties and lable information either in **Raw data** and **Human readable form**.
-2. Export Parameters properties either in **Raw data** and **Human readable form** to a CSV file, and also import Parameters properties from a locally stored CSV file(based on **Raw data**).
-3. Export Parameters properties to a **Shared Parameters** txt file, and also import Parameters properties from a **Shared Parameters** txt file.
+2. Export Parameters properties to a **Shared Parameters** txt file, and also import Parameters properties from a **Shared Parameters** txt file.
+3. Export Parameters properties either in **Raw data** and **Human readable form** to a CSV file, and also import Parameters properties from a locally stored CSV file(based on **Raw data**).
 
 ## Thumbnail
 ![thumbnail](/thumbnail.png)  
-
-## Demonstration
-[![https://youtu.be/X6mFX_yqhTI](http://img.youtube.com/vi/X6mFX_yqhTI/0.jpg)](https://youtu.be/X6mFX_yqhTI "Display and exchange Parameters information with CSV file")
-
 
 # Web App Setup
 
@@ -33,7 +29,6 @@ This sample demonstrates displaying and exchanging parameters in the following w
 4. **JavaScript** basic knowledge with **jQuery**
 
 For using this sample, you need an Autodesk developer credentials. Visit the [APS Developer Portal](https://developer.autodesk.com), sign up for an account, then [create an app](https://developer.autodesk.com/myapps/create). For this new app, use **http://localhost:3000/api/aps/callback/oauth** as Callback URL. Finally take note of the **Client ID** and **Client Secret**.
-
 
 ## Running locally
 
@@ -82,10 +77,10 @@ Open the browser: [http://localhost:3000](http://localhost:3000).
 1. Make sure to be the Account Admin for the ACC hub.
 - **Operate with App after setup**
 1. Select a Parameters Collection under an ACC account, all the parameters will be listed either in **Raw data** and **Human readable form**.
-2. Click **Execute** button to export ACC Parameters either in **Raw data** and **Human readable form** to a CSV file.
-3. Click **Execute** button to update ACC Parameters by importing from a locally stored CSV file(based on **Raw data**).
-4. Click **Execute** button to generate a Shared Parameters txt file by exporting to txt.
-5. Click **Execute** button to import ACC Parameters from a local Shared Parameters txt file.
+2. Click **Execute** button to generate a Shared Parameters txt file by exporting to txt.
+3. Click **Execute** button to import ACC Parameters from a local Shared Parameters txt file.
+4. Click **Execute** button to export ACC Parameters either in **Raw data** and **Human readable form** to a CSV file.
+5. Click **Execute** button to update ACC Parameters by importing from a locally stored CSV file(based on **Raw data**).
 
 
 ## Deployment
@@ -94,12 +89,8 @@ To deploy this application to Heroku, the **Callback URL** for APS must use your
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Autodesk-Platform-Services/aps-parameters.exchange)
 
-
 ## Limitation
-
-
-## Known issues
-
+1. To convert between Shared Parameters and Parameters Service, there is a map maintain the relationship, but this is not always updated to latest, the new parameters may not be able to converted. 
 
 ## Tips & Tricks
 1. Not all the properties could be updated, only these marked as **Editable** are supported.

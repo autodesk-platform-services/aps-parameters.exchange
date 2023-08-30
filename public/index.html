@@ -43,8 +43,6 @@
           </div>
         </li>
       </ul>
-
-
       <ul class="nav navbar-nav right col-lg-2">
         <div style="padding-top: 10px; text-align: right;">
           <li>
@@ -170,6 +168,45 @@
               </div>
             </div>
             <br>
+            <div id="exchangeSharedParamsGroup">
+              <div class="row">
+                <div style="padding-top: 10px; text-align: left;">
+                  <div class="col-lg-12">
+                    <div style="text-align: left;">
+                      <label>Shared Parameters Exchange:</label>
+                    </div>
+                    <div class="input-group">
+                      <span class="input-group-addon">
+                        <input type="radio" name='exchangeSharedParameters' value='export' checked>
+                      </span>
+                      <label class="form-control">Export to TXT</label>
+                    </div>
+                    <div class="input-group">
+                      <span class="input-group-addon">
+                        <input type="radio" name='exchangeSharedParameters' value='import'>
+                      </span>
+                      <label class="form-control">Import from TXT</label>
+                    </div>
+                    <div class="form-group" id="importSharedParameters" hidden>
+                      <label for="inputTxtFile">Please select a Revit Shared Parameters file.</label>
+                      <input type="file" class="form-control-file" id="inputTxtFile">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="btn-group btn-lg">
+                <div style="padding-top: 10px;">
+                  <div class="importSharedParametersInProgress" hidden>
+                    <div style="text-align: center;">
+                      <img src="res/Bars-1s-200px.svg" class="InProgressImg">
+                    </div>
+                  </div>
+                  <button class="btn btn-primary" id="executeTXT">
+                    <span class="glyphicon glyphicon-play"></span>Execute
+                  </button>
+                </div>
+              </div>
+            </div>
             <div id="exchangeParamsGroup">
               <div class="row">
                 <div style="padding-top: 10px; text-align: left;">
@@ -210,51 +247,10 @@
                 </div>
               </div>
             </div>
-            <div id="exchangeSharedParamsGroup">
-              <div class="row">
-                <div style="padding-top: 10px; text-align: left;">
-                  <div class="col-lg-12">
-                    <div style="text-align: left;">
-                      <label>Shared Parameters Exchange:</label>
-                    </div>
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                        <input type="radio" name='exchangeSharedParameters' value='export' checked>
-                      </span>
-                      <label class="form-control">Export to TXT</label>
-                    </div>
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                        <input type="radio" name='exchangeSharedParameters' value='import'>
-                      </span>
-                      <label class="form-control">Import from TXT</label>
-                    </div>
-                    <div class="form-group" id="importSharedParameters" hidden>
-                      <label for="inputTxtFile">Please select a Revit Shared Parameters file.</label>
-                      <input type="file" class="form-control-file" id="inputTxtFile">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="btn-group btn-lg">
-                <div style="padding-top: 10px;">
-                  <div class="importSharedParametersInProgress" hidden>
-                    <div style="text-align: center;">
-                      <img src="res/Bars-1s-200px.svg" class="InProgressImg">
-                    </div>
-                  </div>
-                  <button class="btn btn-primary" id="executeTXT">
-                    <span class="glyphicon glyphicon-play"></span>Execute
-                  </button>
-                </div>
-
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
-
 
     <!-- Modal Provision BIM360  -->
     <div class="modal fade" id="provisionAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

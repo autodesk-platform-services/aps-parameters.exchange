@@ -48,6 +48,7 @@ const Space_Replacement = '\xff';
 
 const REVIT_FAMILY_TYPE = "autodesk.revit.spec:familyType";
 const Editable_String = "(Editable)";
+const NotAvialableString = 'N/A';
 
 // Data type
 const DataType = {
@@ -647,7 +648,7 @@ class ParametersTable {
   exportTxt() {
     let csvString = this.txtData;
     let a = document.createElement('a');
-    a.href = 'data:text/plain;charset=utf-8,' + csvString;
+    a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvString);
     a.target = '_blank';
     a.download = this.currentDataType + (new Date()).getTime() + '.txt';
     document.body.appendChild(a);
@@ -673,7 +674,7 @@ class ParametersTable {
         let data = rowData['metadata'].find(item => { return (item.id == key) })
         if (data == null) {
           const itemId = "metadata." + key;
-          rowData[itemId] = "N/A";
+          rowData[itemId] = NotAvialableString;
           continue;
         }
 
@@ -894,7 +895,7 @@ class ParametersTable {
       let csvRowTmp = [];
       for (key in item) {
         // TBD: special handle core.description property since it includes a rich text
-        if (key === 'description' && item[key] != null) {
+        if (key.includes('description') && item[key] != null) {
           let tmpStr = item[key].replaceAll(',', Comma_Replacement).replaceAll('\n', Enter_Replacement).replaceAll(' ', Space_Replacement);
           csvRowTmp.push(tmpStr);
         } else {
@@ -907,7 +908,7 @@ class ParametersTable {
   };
 
   prepareTxtData(){
-    var sharedParamsTxt = "This is a Revit shared parameter file.\nDo not edit manually.\n*META VERSION	MINVERSION\nMETA\t2\t1\n";
+    var sharedParamsTxt = "#This is a Revit shared parameter file.\n#Do not edit manually.\n*META VERSION	MINVERSION\nMETA\t2\t1\n";
 
     sharedParamsTxt += `*GROUP	ID	NAME\n`;
     sharedParamsTxt += `GROUP`+`\t`+`1`+`\t`+`NA`+'\n';
@@ -926,12 +927,6 @@ class ParametersTable {
 
       const dataTypeTmp = item.specId.split('-')[0];
       let dataType =  SharedParamtersConverter.getDbString(item.specId);
-      // if( dataTypeTmp == REVIT_FAMILY_TYPE ){
-      //   dataType = 'FAMILYTYPE';
-      // }else{
-      //   dataType = SharedParamtersConverter.getDbString(dataTypeTmp);
-      // }
-      // const dataType = (dataTypeTmp == REVIT_FAMILY_TYPE)?'FAMILYTYPE':dataTypeTmp;
       stringItem += '\t'+dataType;
 
       let dataCategory = item['metadata.specCategoryId'];

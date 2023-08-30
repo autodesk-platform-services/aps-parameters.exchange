@@ -25,6 +25,8 @@ var config = require('../config');
 const { apiClientCallAsync } = require('./common/apiclient');
 const { OAuth } = require('./common/oauth');
 
+const NotAvialableString = 'N/A';
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Add String.format() method if it's not existing
@@ -200,17 +202,15 @@ router.get('/parameters/type/:typeId/id/:valueId', jsonParser, async function(re
     case 'metadata.labelIds':{
       const accountId = req.query.accountId;
       const collectionId = req.query.collectionId;
-      requestUrl = config.parameters.URL.LABEL_URL.format(accountId, collectionId, valueId);
+      requestUrl = config.parameters.URL.LABEL_URL.format(accountId, valueId);
       tokenType = TokenType.THREELEGGED;
       break;
-
     }
     case 'metadata.group': {
       requestUrl = config.parameters.URL.GROUPS_URL;
       tokenType = TokenType.THREELEGGED;
       break;
     }
-
     case 'specId':{
       if (valueId === config.parameters.RevitFamilyTypeId) {
         return (res.status(200).json({ name: config.parameters.RevitFamilyType }));
@@ -219,14 +219,15 @@ router.get('/parameters/type/:typeId/id/:valueId', jsonParser, async function(re
       tokenType = TokenType.THREELEGGED;
       break;
     }
-
     case 'metadata.specCategoryId':
     case 'metadata.categories':{
+      if (valueId === NotAvialableString) {
+        return (res.status(200).json({ name: NotAvialableString }));
+      }
       requestUrl = config.parameters.URL.CATEGORIES_URL;
       tokenType = TokenType.THREELEGGED;
       break;
     }
-
     case 'creatorId':
     case 'creator':
     case 'createdBy':
@@ -254,7 +255,7 @@ router.get('/parameters/type/:typeId/id/:valueId', jsonParser, async function(re
   }
   let response = null;
   let itemList = [];
-  let resInfo = null;
+  let resInfo = {};
   
   // Get the item list or the item info 
   try {
