@@ -89,12 +89,14 @@ To deploy this application to Heroku, the **Callback URL** for APS must use your
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Autodesk-Platform-Services/aps-parameters.exchange)
 
-## Limitation
-1. To convert between Shared Parameters and Parameters Service, there is a map maintain the relationship, but this is not always updated to latest, the new parameters may not be able to converted. 
 
 ## Tips & Tricks
 1. Not all the properties could be updated, only these marked as **Editable** are supported.
 2. To import properties from CSV file, the suggested way is to export a CSV file of **raw data** first, update the editable properties within the file, then import it back to ACC Parameters.
+3. To convert between Shared Parameters and Parameters Service, there is a map maintain the relationship, the map used by the sample is not latest, please always use the following Revit API to iterate all the categories and get the latest map between shared parameters and parameters service. 
+    - [Get Category Id method returns the integer in an Element ID](https://www.revitapidocs.com/2024/1588405d-eb7a-cd3d-60a0-f19cfc076109.htm)
+    - [Get Category typeId method returns the typeid](https://www.revitapidocs.com/2024/957321bd-0fea-ccc5-3fbb-f461df557f8d.htm)
+
 
 ## Troubleshooting
 1. **Cannot see my ACC account**: Make sure to provision the APS App Client ID within the ACC account, [learn more here](https://aps.autodesk.com/blog/bim-360-docs-provisioning-forge-apps). This requires the Account Admin permission.
